@@ -8,11 +8,17 @@ import * as Notifications from 'expo-notifications';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { LocationProvider } from '../components/LocationContext';
+import { AuthProvider } from '../components/AuthContext';
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    'Preahvihear': require('../assets/fonts/Preahvihear-Regular.ttf'),
+    'Poppins-Light': require('../assets/fonts/Poppins-Light.ttf'),
+    'Poppins-Regular': require('../assets/fonts/Poppins-Regular.ttf'),
+    'Poppins-Medium': require('../assets/fonts/Poppins-Medium.ttf'),
+    'Poppins-SemiBold': require('../assets/fonts/Poppins-SemiBold.ttf'),
   });
 
   if (!loaded) {
@@ -32,16 +38,24 @@ export default function RootLayout() {
   });
 
   return (
-    <LocationProvider>
-      <PaperProvider>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-          <StatusBar style="auto" />
-        </ThemeProvider>
-      </PaperProvider>
-    </LocationProvider>
+    <AuthProvider>
+      <LocationProvider>
+        <PaperProvider>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="auth" options={{ headerShown: false }} />
+              <Stack.Screen name="index" options={{ headerShown: false }} />
+              <Stack.Screen name="movie-selection" options={{ headerShown: false }} />
+              <Stack.Screen name="theater-selection" options={{ headerShown: false }} />
+              <Stack.Screen name="date-selection" options={{ headerShown: false }} />
+              <Stack.Screen name="confirmation" options={{ headerShown: false }} />
+              <Stack.Screen name="request-history" options={{ headerShown: false }} />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+            <StatusBar style="auto" />
+          </ThemeProvider>
+        </PaperProvider>
+      </LocationProvider>
+    </AuthProvider>
   );
 }
