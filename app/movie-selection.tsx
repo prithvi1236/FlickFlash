@@ -1,5 +1,5 @@
 import { View, FlatList, Image } from 'react-native';
-import { Text, Searchbar, Card, ActivityIndicator } from 'react-native-paper';
+import { Text, Searchbar, Card, ActivityIndicator, Snackbar, Button } from 'react-native-paper';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation, Movie } from '../components/LocationContext';
@@ -13,16 +13,23 @@ export default function MovieSelectionScreen() {
   const [filtered, setFiltered] = useState<Movie[]>([]);
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [showError, setShowError] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
     setLoading(true);
+    setError('');
     axios.get(`${BACKEND_URL}/movies?location=${location}`)
       .then(res => {
         setMovies(res.data.movies);
         setFiltered(res.data.movies);
       })
-      .catch(() => setMovies([]))
+      .catch(() => {
+        setMovies([]);
+        setError('Failed to fetch movies.');
+        setShowError(true);
+      })
       .finally(() => setLoading(false));
   }, [location]);
 
@@ -38,6 +45,7 @@ export default function MovieSelectionScreen() {
 
   return (
     <View style={{ flex: 1, padding: 16 }}>
+      <Button mode="text" onPress={() => router.back()} style={{ marginBottom: 8 }}>Back</Button>
       <Text variant="titleLarge" style={{ marginBottom: 8 }}>Select a Movie</Text>
       <Searchbar
         placeholder="Search movies"
@@ -64,6 +72,7 @@ export default function MovieSelectionScreen() {
         )}
         ListEmptyComponent={<Text>No movies found.</Text>}
       />
+      <Snackbar visible={showError} onDismiss={() => setShowError(false)}>{error}</Snackbar>
     </View>
   );
 } 
