@@ -48,8 +48,17 @@ export default function AuthScreen() {
 
         if (data.user) {
           console.log('User logged in:', data.user.email);
+          console.log('🔐 Login session details:', {
+            access_token: data.session?.access_token ? 'Present' : 'Missing',
+            refresh_token: data.session?.refresh_token ? 'Present' : 'Missing',
+            expires_at: data.session?.expires_at,
+          });
           setLocation('Mumbai');
-          router.push('/');
+          console.log('🔄 Redirecting to home page...');
+          // Add a longer delay to ensure auth state is updated
+          setTimeout(() => {
+            router.push('/');
+          }, 500);
         }
       } else {
         // Register
@@ -154,8 +163,17 @@ export default function AuthScreen() {
         
         if (sessionData.session) {
           console.log('✅ User authenticated:', sessionData.session.user.email);
+          console.log('🔐 Session details:', {
+            access_token: sessionData.session.access_token ? 'Present' : 'Missing',
+            refresh_token: sessionData.session.refresh_token ? 'Present' : 'Missing',
+            expires_at: sessionData.session.expires_at,
+          });
           setLocation('Mumbai');
-          router.push('/');
+          console.log('🔄 Redirecting to home page...');
+          // Add a longer delay to ensure auth state is updated
+          setTimeout(() => {
+            router.push('/');
+          }, 500);
         } else {
           console.log('❌ No session found');
           Alert.alert('Authentication Failed', 'No session found after Google sign-in');

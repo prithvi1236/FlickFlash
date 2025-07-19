@@ -13,9 +13,14 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
   const router = useRouter();
 
   React.useEffect(() => {
+    console.log('🔒 ProtectedRoute - Auth state:', { user: !!user, loading });
+    
     if (!loading && !user) {
+      console.log('🔒 Redirecting to auth - no user found');
       // Redirect to auth if not authenticated
       router.push('/auth');
+    } else if (!loading && user) {
+      console.log('🔒 User authenticated, showing protected content');
     }
   }, [user, loading, router]);
 

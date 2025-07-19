@@ -3,7 +3,6 @@ import { Text } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { useLocation, Location } from '../components/LocationContext';
-import { ProtectedRoute } from '../components/ProtectedRoute';
 import { useAuth } from '../components/AuthContext';
 
 const { width, height } = Dimensions.get('window');
@@ -33,8 +32,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <ProtectedRoute>
-      <View style={styles.container}>
+    <View style={styles.container}>
         {/* Main Content Panel */}
         <View style={styles.mainPanel}>
           <View style={styles.contentArea}>
@@ -94,6 +92,20 @@ export default function HomeScreen() {
                 View Request History
               </Text>
             </TouchableOpacity>
+
+            {/* Sign Out Button */}
+            <TouchableOpacity
+              style={[
+                styles.actionButton,
+                styles.signOutButton
+              ]}
+              onPress={signOut}
+              activeOpacity={0.8}
+            >
+              <Text style={styles.signOutButtonText}>
+                Sign Out
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -146,7 +158,6 @@ export default function HomeScreen() {
         </View>
       </Modal>
     </View>
-    </ProtectedRoute>
   );
 }
 
@@ -287,6 +298,24 @@ const styles = StyleSheet.create({
     color: '#F2EFE7', // Cream text like main page
     fontSize: 14,
     fontWeight: '400',
+    fontFamily: 'Poppins-Regular',
+  },
+  signOutButton: {
+    borderWidth: 2,
+    borderColor: '#EF4444', // Red border for sign out
+    backgroundColor: 'transparent',
+    borderRadius: 50,
+    height: 64,
+    marginBottom: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  signOutButtonText: {
+    color: '#EF4444', // Red text for sign out
+    fontSize: 18,
+    fontWeight: '400',
+    textAlign: 'center',
     fontFamily: 'Poppins-Regular',
   },
 }); 
